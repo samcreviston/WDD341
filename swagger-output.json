@@ -13,7 +13,7 @@
   "paths": {
     "/": {
       "get": {
-        "description": "",
+        "description": "Test to confirm local host connection",
         "responses": {
           "200": {
             "description": "OK"
@@ -23,7 +23,7 @@
     },
     "/contacts/": {
       "get": {
-        "description": "",
+        "description": "Retrieves a list of all contacts",
         "responses": {
           "200": {
             "description": "OK"
@@ -37,7 +37,7 @@
         "description": "",
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Creates a new contact with the provided data"
           },
           "400": {
             "description": "Bad Request"
@@ -50,7 +50,7 @@
     },
     "/contacts/{id}": {
       "get": {
-        "description": "",
+        "description": "Retrieves a list of all contacts",
         "parameters": [
           {
             "name": "id",
@@ -72,7 +72,7 @@
         }
       },
       "put": {
-        "description": "",
+        "description": "Updates an existing contact by its ID",
         "parameters": [
           {
             "name": "id",
@@ -94,7 +94,7 @@
         }
       },
       "delete": {
-        "description": "",
+        "description": "Deletes a contact by its ID",
         "parameters": [
           {
             "name": "id",
