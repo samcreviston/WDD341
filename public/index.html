@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contacts Frontend</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1 {
+      text-transform: capitalize;
+    }
+    .request-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin-bottom: 30px;
+      border-radius: 8px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    label {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input, textarea {
+      padding: 8px;
+      margin-top: 5px;
+      font-size: 1em;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px;
+      font-size: 1em;
+      cursor: pointer;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .response-box {
+      white-space: pre-wrap;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      padding: 10px;
+      height: 100%;
+      overflow-y: auto;
+      font-family: monospace;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>contacts</h1>
+
+  <!-- GET all contacts -->
+  <section class="request-section" id="get-all-contacts">
+    <form id="form-get-all-contacts">
+      <h2>Get All Contacts</h2>
+      <button type="submit">Send GET /contacts</button>
+    </form>
+    <div class="response-box" id="response-get-all-contacts"></div>
+  </section>
+
+  <!-- GET single contact -->
+  <section class="request-section" id="get-single-contact">
+    <form id="form-get-single-contact">
+      <h2>Get Single Contact</h2>
+      <label for="get-single-id">Contact ID:</label>
+      <input type="text" id="get-single-id" name="id" required placeholder="Enter contact ID" />
+      <button type="submit">Send GET /contacts/:id</button>
+    </form>
+    <div class="response-box" id="response-get-single-contact"></div>
+  </section>
+
+  <!-- POST create contact -->
+  <section class="request-section" id="post-create-contact">
+    <form id="form-post-create-contact">
+      <h2>Create New Contact</h2>
+      <label for="post-firstName">First Name:</label>
+      <input type="text" id="post-firstName" name="firstName" required />
+      <label for="post-lastName">Last Name:</label>
+      <input type="text" id="post-lastName" name="lastName" required />
+      <label for="post-email">Email:</label>
+      <input type="email" id="post-email" name="email" required />
+      <label for="post-favoriteColor">Favorite Color:</label>
+      <input type="text" id="post-favoriteColor" name="favoriteColor" required />
+      <label for="post-address">Address:</label>
+      <input type="text" id="post-address" name="address" required />
+      <button type="submit">Send POST /contacts</button>
+    </form>
+    <div class="response-box" id="response-post-create-contact"></div>
+  </section>
+
+  <!-- PUT update contact -->
+  <section class="request-section" id="put-update-contact">
+    <form id="form-put-update-contact">
+      <h2>Update Existing Contact</h2>
+      <label for="put-id">Contact ID:</label>
+      <input type="text" id="put-id" name="id" required placeholder="Enter contact ID" />
+      <label for="put-favoriteColor">Favorite Color:</label>
+      <input type="text" id="put-favoriteColor" name="favoriteColor" required />
+      <button type="submit">Send PUT /contacts/:id</button>
+    </form>
+    <div class="response-box" id="response-put-update-contact"></div>
+  </section>
+
+  <!-- DELETE contact -->
+  <section class="request-section" id="delete-contact">
+    <form id="form-delete-contact">
+      <h2>Delete Contact</h2>
+      <label for="delete-id">Contact ID:</label>
+      <input type="text" id="delete-id" name="id" required placeholder="Enter contact ID" />
+      <button type="submit">Send DELETE /contacts/:id</button>
+    </form>
+    <div class="response-box" id="response-delete-contact"></div>
+  </section>
+
+  <script>
+    async function sendRequest(method, url, body, responseElement) {
+      try {
+        const options = { method };
+        if (body) {
+          options.headers = { 'Content-Type': 'application/json' };
+          options.body = JSON.stringify(body);
+        }
+        const response = await fetch(url, options);
+        const text = await response.text();
+        try {
+          // Try to parse JSON for pretty print
+          const json = JSON.parse(text);
+          responseElement.textContent = JSON.stringify(json, null, 2);
+        } catch {
+          responseElement.textContent = text;
+        }
+      } catch (error) {
+        responseElement.textContent = 'Error: ' + error.message;
+      }
+    }
+
+    // GET all contacts
+    document.getElementById('form-get-all-contacts').addEventListener('submit', e => {
+      e.preventDefault();
+      const responseEl = document.getElementById('response-get-all-contacts');
+      sendRequest('GET', '/contacts', null, responseEl);
+    });
+
+    // GET single contact
+    document.getElementById('form-get-single-contact').addEventListener('submit', e => {
+      e.preventDefault();
+      const id = document.getElementById('get-single-id').value.trim();
+      const responseEl = document.getElementById('response-get-single-contact');
+      if (!id) {
+        responseEl.textContent = 'Please enter a contact ID.';
+        return;
+      }
+      sendRequest('GET', `/contacts/${id}`, null, responseEl);
+    });
+
+    // POST create contact
+    document.getElementById('form-post-create-contact').addEventListener('submit', e => {
+      e.preventDefault();
+      const form = e.target;
+      const body = {
+        firstName: form.firstName.value.trim(),
+        lastName: form.lastName.value.trim(),
+        email: form.email.value.trim(),
+        favoriteColor: form.favoriteColor.value.trim(),
+        address: form.address.value.trim()
+      };
+      const responseEl = document.getElementById('response-post-create-contact');
+      sendRequest('POST', '/contacts', body, responseEl);
+    });
+
+    // PUT update contact
+    document.getElementById('form-put-update-contact').addEventListener('submit', e => {
+      e.preventDefault();
+      const form = e.target;
+      const id = form.id.value.trim();
+      const body = {
+        favoriteColor: form.favoriteColor.value.trim()
+      };
+      const responseEl = document.getElementById('response-put-update-contact');
+      if (!id) {
+        responseEl.textContent = 'Please enter a contact ID.';
+        return;
+      }
+      sendRequest('PUT', `/contacts/${id}`, body, responseEl);
+    });
+
+    // DELETE contact
+    document.getElementById('form-delete-contact').addEventListener('submit', e => {
+      e.preventDefault();
+      const id = document.getElementById('delete-id').value.trim();
+      const responseEl = document.getElementById('response-delete-contact');
+      if (!id) {
+        responseEl.textContent = 'Please enter a contact ID.';
+        return;
+      }
+      sendRequest('DELETE', `/contacts/${id}`, null, responseEl);
+    });
+  </script>
+</body>
+</html>

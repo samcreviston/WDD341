@@ -10,7 +10,7 @@ const client = require('../server'); // Import the MongoDB client from server.js
 // Create a new contact
 const createContact = async (req, res) => {
   const contact = req.body;
-  const requiredFields = ['firstName', 'lastName', 'email', 'favoriteColor', 'birthday'];
+  const requiredFields = ['firstName', 'lastName', 'email', 'favoriteColor', 'address'];
 
   for (const field of requiredFields) {
     if (!contact[field]) {

@@ -20,6 +20,8 @@ module.exports = client; //exports the client object so other files (like route 
 //enable json reading for server
 app.use(express.json());
 
+app.use(express.static('public'));
+
 app.use('/', require('./routes'));
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
