@@ -3,6 +3,13 @@ const router = express.Router();
 const { ObjectId } = require('mongodb');
 const client = require('../server'); // Import the MongoDB client from server.js
 
+//import for W3 CRUD Assignment
+const {
+  createContact,
+  updateContact,
+  deleteContact
+} = require('../controllers/index');
+
 // Access the database collection only after the client is connected
 router.get('/', async (req, res) => {
   try {
@@ -27,5 +34,14 @@ router.get('/:id', async (req, res) => {
     res.status(500).send('Error fetching contact: ' + err.message); // Send error if DB query fails
   }
 });
+
+// POST /contacts
+router.post('/', createContact);
+
+// PUT /contacts/:id
+router.put('/:id', updateContact);
+
+// DELETE /contacts/:id
+router.delete('/:id', deleteContact);
 
 module.exports = router;

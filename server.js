@@ -17,6 +17,8 @@ async function connectDB() {
 connectDB();
 module.exports = client; //exports the client object so other files (like route files) can import and use the database connection.
 
+//enable json reading for server
+app.use(express.json());
 
 app.use('/', require('./routes'));
 app.listen(port, () => {
