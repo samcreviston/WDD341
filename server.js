@@ -2,6 +2,14 @@ var express = require('express');
 var app = express();
 const port = process.env.PORT || 3000;
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger-output.json');
+var options = {
+  swaggerOptions: {
+    validatorUrl: null
+  }
+};
+
 require('dotenv').config(); //loads environment variables from a `.env` file into `process.env`.
 const { MongoClient } = require('mongodb'); //MongoClient is a class used to connect to MongoDB database and run queries.
 
@@ -26,3 +34,5 @@ app.use('/', require('./routes'));
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
