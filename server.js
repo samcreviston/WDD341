@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 const port = process.env.PORT || 3000;
 
+//api documentation UI
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger-output.json');
 var options = {
@@ -35,4 +36,5 @@ app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
 
+//enable api documetation UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));

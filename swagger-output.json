@@ -35,6 +35,41 @@
       },
       "post": {
         "description": "",
+        "parameters": [
+          {
+            "name": "contact",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "firstName",
+                "lastName",
+                "email",
+                "favoriteColor",
+                "address"
+              ],
+              "properties": {
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email"
+                },
+                "favoriteColor": {
+                  "type": "string"
+                },
+                "address": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "201": {
             "description": "Creates a new contact with the provided data"
@@ -50,7 +85,7 @@
     },
     "/contacts/{id}": {
       "get": {
-        "description": "Retrieves a list of all contacts",
+        "description": "Retrieves a contact by ID",
         "parameters": [
           {
             "name": "id",
@@ -79,6 +114,32 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "contact",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email"
+                },
+                "favoriteColor": {
+                  "type": "string"
+                },
+                "address": {
+                  "type": "string"
+                }
+              }
+            }
           }
         ],
         "responses": {
